@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Алексей Бабыкин](https://up.htmlacademy.ru/javascript/12/user/153671).
-* Наставник: `Неизвестно`.
+* Наставник: `Антон Сутармин`.
 
 ---
 
