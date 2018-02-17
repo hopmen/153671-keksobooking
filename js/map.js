@@ -131,17 +131,17 @@ var getPopup = function (data) {
   template.querySelectorAll('.map__card p ')[2].textContent = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
   template.querySelectorAll('.map__card p ')[3].textContent = 'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
   template.querySelectorAll('.map__card p ')[4].textContent = data.offer.description;
-  template.querySelector('.popup__pictures').innerHTML = '';
   template.querySelector('.popup__pictures').appendChild(getPictures(data.offer.photos));
-  template.querySelector('.popup__features').innerHTML = '';
   template.querySelector('.popup__features').appendChild(getFeature(data.offer.features));
   return template;
 };
 // функция добавляет все метки из 'arrayLabels' на карту 'mapLabels'
-var addLabelsMap = function (arrayLabels, mapLabels) {
+var getLabels = function (arrayLabels) {
+  var fragment = document.createDocumentFragment();
   for (var i = 0; i < arrayLabels.length; i++) {
-    mapLabels.appendChild(getLabel(arrayLabels[i]));
+    fragment.appendChild(getLabel(arrayLabels[i]));
   }
+  return fragment;
 };
 
 
@@ -151,4 +151,4 @@ var labels = getCards(LABELS_NUMBER);
 // начала модуля
 mapShow();
 map.insertBefore(getPopup(labels[0]), document.querySelector('.map__filters-container'));
-addLabelsMap(labels, mapLabels);
+mapLabels.appendChild(getLabels(labels));
