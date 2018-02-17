@@ -1,4 +1,14 @@
 'use strict';
+
+// нужные переменые
+var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
+var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var HOTEL_TYPES = ['flat', 'house', 'bungalo'];
+var CHECKIN_TIMES = ['12:00', '13:00', '14:00'];
+var CHECKOUT_TIMES = ['12:00', '13:00', '14:00'];
+var LABELS_NUMBER = 8;
+
 // функция возвращает случайное число от min до max
 var getRandomInteger = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -89,11 +99,13 @@ var getLabel = function (data) {
 var getPictures = function (pictures) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < pictures.length; i++) {
+    var li = document.createElement('li');
     var img = document.createElement('img');
     img.setAttribute('src', pictures[i]);
     img.setAttribute('width', 65);
     img.setAttribute('height', 65);
-    fragment.appendChild(img);
+    li.appendChild(img);
+    fragment.appendChild(li);
   }
   return fragment;
 };
@@ -113,12 +125,13 @@ var getPopup = function (data) {
   template.querySelector('.map__card .popup__avatar').src = data.author.avatar;
   template.querySelector('.map__card h3').textContent = data.offer.title;
   template.querySelector('small').textContent = data.offer.adress;
-  template.querySelector('.map__card p').textContent = data.location.x + ',' + data.location.y;
+  template.querySelector('.map__card p').textContent = data.offer.adress;
   template.querySelector('.popup__price').textContent = data.offer.price + '₽ / ночь';
   template.querySelector('.map__card h4').textContent = data.offer.type;
   template.querySelectorAll('.map__card p ')[2].textContent = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
   template.querySelectorAll('.map__card p ')[3].textContent = 'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
   template.querySelectorAll('.map__card p ')[4].textContent = data.offer.description;
+  template.querySelector('.popup__pictures').innerHTML = '';
   template.querySelector('.popup__pictures').appendChild(getPictures(data.offer.photos));
   template.querySelector('.popup__features').innerHTML = '';
   template.querySelector('.popup__features').appendChild(getFeature(data.offer.features));
@@ -131,17 +144,10 @@ var addLabelsMap = function (arrayLabels, mapLabels) {
   }
 };
 
-// нужные переменые
-var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
-var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-var HOTEL_TYPES = ['flat', 'house', 'bungalo'];
-var CHECKIN_TIMES = ['12:00', '13:00', '14:00'];
-var CHECKOUT_TIMES = ['12:00', '13:00', '14:00'];
-var NUMBERLABELS = 8;
+
 var map = document.querySelector('.map');
 var mapLabels = document.querySelector('.map__pins');
-var labels = getCards(NUMBERLABELS);
+var labels = getCards(LABELS_NUMBER);
 // начала модуля
 mapShow();
 map.insertBefore(getPopup(labels[0]), document.querySelector('.map__filters-container'));
