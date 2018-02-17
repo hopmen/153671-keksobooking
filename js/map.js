@@ -1,9 +1,9 @@
 'use strict';
-
-var getRandomInteger = function (min, max) { // функция возвращает случайное число от min до max
+// функция возвращает случайное число от min до max
+var getRandomInteger = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
-
+// функция возвращает массив из случайных элементов 'amountOfData' - колличесто возвращаемых элементов
 var getRandomElements = function (arr, amountOfData) {
   var newArr = [];
   if (arr.length >= amountOfData) {
@@ -14,24 +14,25 @@ var getRandomElements = function (arr, amountOfData) {
       }
     }
   } else {
-    throw new Error('ФААЛИТИ ЕРРОР. ТЫ ХОЧЕШЬ БОЛЬШЕ СЛУЧАЙНЫХ ВОЛШЕБНИКОВ ЧЕМ ВОЗМОЖНО');
+    throw new Error('В массивае ' + arr + 'нет ' + amountOfData + ' элементов');
   }
   return newArr;
 };
+// функция возвращает случайный тип жилья и переводит на руский язык
 var getRandomeTypeHotel = function (arr) {
   var id = getRandomInteger(0, arr.length - 1);
-  if (arr[id] === 'flat') {
-    return 'Квартира';
-  }
-  if (arr[id] === 'house') {
-    return 'Дом';
-  }
-  if (arr[id] === 'bungalo') {
-    return 'Бунгало';
+  switch (arr[id]) {
+    case 'flat':
+      return 'Квартира';
+    case 'house':
+      return 'Дом';
+    case 'bungalo':
+      return 'Бунгало';
   }
   return null;
 };
-var getCards = function (number) { // функция возвращает массив из 'number' эелентов, каждый элемент это объект
+// функция возвращает массив из 'number' эелентов, каждый элемент это объект
+var getCards = function (number) {
   var listing = [];// объект который хранит иформацию для метки на карте
   for (var i = 0; i < number; i++) {
     var posX = getRandomInteger(300, 900);
@@ -68,13 +69,14 @@ var mapShow = function () {
   document.querySelector('.map').classList.remove('map--faded');
 };
 // !WARNING END
-
-var getLabel = function (data) { // функция возращает метку с подставленми кординатами и аватаркой из объекта 'data'
+// функция возращает метку с подставленми кординатами и аватаркой из объекта 'data'
+var getLabel = function (data) {
   var button = document.createElement('button');
   var picture = document.createElement('img');
   button.className = 'map__pin';
-  button.style.left = data.location.x - button.offsetWidth / 2 + 'px';
-  button.style.top = data.location.y - button.offsetHeight + 'px';
+  button.style.left = data.location.x + 'px';
+  button.style.top = data.location.y + 'px';
+  button.style.transform = 'translate(-50%, -100%)';
   picture.src = data.author.avatar;
   picture.style.width = '40px';
   picture.style.height = '40px';
@@ -83,8 +85,30 @@ var getLabel = function (data) { // функция возращает метку
   return button;
 };
 
-
-var getPopup = function (data) { // возвращает созданую карточку из данных объекта 'data' по шабону template
+// возвращает фрагмет созданых из pictures картинок
+var getPictures = function (pictures) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < pictures.length; i++) {
+    var img = document.createElement('img');
+    img.setAttribute('src', pictures[i]);
+    img.setAttribute('width', 65);
+    img.setAttribute('height', 65);
+    fragment.appendChild(img);
+  }
+  return fragment;
+};
+// возвращает фрагмет созданых из features дополнительных услах
+var getFeature = function (features) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < features.length; i++) {
+    var feature = document.createElement('li');
+    feature.classList.add('feature', 'feature--' + features[i]);
+    fragment.appendChild(feature);
+  }
+  return fragment;
+};
+// возвращает созданую карточку из данных объекта 'data' по шабону template
+var getPopup = function (data) {
   var template = document.querySelector('template').content.cloneNode(true);
   template.querySelector('.map__card .popup__avatar').src = data.author.avatar;
   template.querySelector('.map__card h3').textContent = data.offer.title;
@@ -95,28 +119,13 @@ var getPopup = function (data) { // возвращает созданую кар
   template.querySelectorAll('.map__card p ')[2].textContent = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
   template.querySelectorAll('.map__card p ')[3].textContent = 'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
   template.querySelectorAll('.map__card p ')[4].textContent = data.offer.description;
-  for (var i = 0; i < 3; i++) {
-    var img = document.createElement('img');
-    img.setAttribute('src', data.offer.photos[i]);
-    img.setAttribute('width', 60);
-    img.setAttribute('height', 60);
-    template.querySelector('.popup__pictures').appendChild(img);
-  }
-  // помоему через жопу добавляю feature
-  var fragment = document.createDocumentFragment();
-  for (i = 0; i < data.offer.features.length; i++) {
-    var feature = document.createElement('li');
-    feature.classList.add('feature', 'feature--' + data.offer.features[i]);
-    fragment.appendChild(feature);
-  }
+  template.querySelector('.popup__pictures').appendChild(getPictures(data.offer.photos));
   template.querySelector('.popup__features').innerHTML = '';
-  template.querySelector('.popup__features').appendChild(fragment);
-  // конец
+  template.querySelector('.popup__features').appendChild(getFeature(data.offer.features));
   return template;
 };
-
-
-var addLabelsMap = function (arrayLabels, mapLabels) { // функция добавляет все метки из 'arrayLabels' на карту 'mapLabels'
+// функция добавляет все метки из 'arrayLabels' на карту 'mapLabels'
+var addLabelsMap = function (arrayLabels, mapLabels) {
   for (var i = 0; i < arrayLabels.length; i++) {
     mapLabels.appendChild(getLabel(arrayLabels[i]));
   }
