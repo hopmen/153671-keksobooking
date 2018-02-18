@@ -80,10 +80,12 @@ var mapShow = function () {
 };
 // !WARNING END
 // функция возращает метку с подставленми кординатами и аватаркой из объекта 'data'
+var idPin = 0;
 var getLabel = function (data) {
   var button = document.createElement('button');
   var picture = document.createElement('img');
   button.className = 'map__pin';
+  button.setAttribute('id-pin', idPin++);
   button.style.left = data.location.x + 'px';
   button.style.top = data.location.y + 'px';
   button.style.transform = 'translate(-50%, -100%)';
@@ -143,12 +145,62 @@ var getLabels = function (arrayLabels) {
   }
   return fragment;
 };
-
+var disableFieldsets = function () {
+  var fieldsets = document.querySelectorAll('.notice__form fieldset');
+  for (var i = 0; i < fieldsets.length; i++) {
+    fieldsets[i].setAttribute('disabled', true);
+  }
+  document.querySelector('.notice__form').classList.add('notice__form--disabled');
+};
+var getPositionMainPins = function () {
+  var pins = document.querySelector('.map__pin--main');
+  var obj = {
+    x: Math.floor(pins.offsetLeft + pins.offsetWidth / 2),
+    y: Math.floor(pins.offsetTop + pins.offsetHeight + 22) // 22 - этострелочка вниз под меткой которая сделана через after
+  };
+  return obj;
+};
+var activeFieldsets = function () {
+  var fieldsets = document.querySelectorAll('.notice__form fieldset');
+  for (var i = 0; i < fieldsets.length; i++) {
+    fieldsets[i].removeAttribute('disabled');
+  }
+  document.querySelector('.notice__form').classList.remove('notice__form--disabled');
+};
+var pageActive = function () {
+  mapShow();
+  activeFieldsets();
+  mapLabels.appendChild(getLabels(labels));
+  document.querySelector('#address').value = getPositionMainPins().x + ', ' + getPositionMainPins().y;
+};
 
 var map = document.querySelector('.map');
 var mapLabels = document.querySelector('.map__pins');
 var labels = getCards(LABELS_NUMBER);
+disableFieldsets();
+document.querySelector('#address').value = getPositionMainPins().x + ', ' + getPositionMainPins().y;
+
+var pin = document.querySelector('.map__pin--main');
+pin.addEventListener('mouseup', function () {
+  pageActive();
+  var d = function (evt) {
+    if (evt.currentTarget.getAttribute('id-pin') !== null) {
+      if(document.querySelector('.map__card') !== null ){
+        map.removeChild(document.querySelector('.map__card'));
+      }
+      
+      var pi = evt.currentTarget.getAttribute('id-pin');
+      map.insertBefore(getPopup(labels[pi]), document.querySelector('.map__filters-container'));
+    }
+  };
+  var z = document.querySelectorAll('.map__pin');
+  for (var i = 0; i < z.length; i++) {
+    z[i].addEventListener('click', d);
+  }
+});
+
 // начала модуля
-mapShow();
-map.insertBefore(getPopup(labels[0]), document.querySelector('.map__filters-container'));
-mapLabels.appendChild(getLabels(labels));
+// mapShow();
+// map.insertBefore(getPopup(labels[0]), document.querySelector('.map__filters-container'));
+// mapLabels.appendChild(getLabels(labels));
+
