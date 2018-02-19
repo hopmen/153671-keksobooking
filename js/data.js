@@ -44,35 +44,37 @@
     return null;
   };
   // функция возвращает массив из 'number' эелентов, каждый элемент это объект
-  window.getCards = function () {
-    var listing = [];// объект который хранит иформацию для метки на карте
-    for (var i = 0; i < LABELS_NUMBER; i++) {
-      var posX = getRandomInteger(300, 900);
-      var posY = getRandomInteger(150, 500);
-      listing.push({
-        author: {
-          avatar: 'img/avatars/user0' + getRandomInteger(1, LABELS_NUMBER) + '.png'
-        },
-        offer: {
-          title: TITLES[getRandomInteger(0, TITLES.length - 1)],
-          adress: posX + ', ' + posY,
-          price: getRandomInteger(1000, 1000000),
-          type: getRandomeTypeHotel(HOTEL_TYPES),
-          rooms: getRandomInteger(1, 5),
-          guests: getRandomInteger(1, 5),
-          checkin: CHECKIN_TIMES[getRandomInteger(0, CHECKIN_TIMES.length - 1)],
-          checkout: CHECKOUT_TIMES[getRandomInteger(0, CHECKOUT_TIMES.length - 1)],
-          features: getRandomElements(FEATURES, getRandomInteger(0, FEATURES.length - 1)),
-          description: '',
-          photos: PHOTOS
-        },
-        location: {
-          x: posX,
-          y: posY
-        }
-      });
+  window.data = {
+    getCards: function () {
+      var listing = [];// объект который хранит иформацию для метки на карте
+      for (var i = 0; i < LABELS_NUMBER; i++) {
+        var posX = getRandomInteger(300, 900);
+        var posY = getRandomInteger(150, 500);
+        listing.push({
+          author: {
+            avatar: 'img/avatars/user0' + getRandomInteger(1, LABELS_NUMBER) + '.png'
+          },
+          offer: {
+            title: TITLES[getRandomInteger(0, TITLES.length - 1)],
+            adress: posX + ', ' + posY,
+            price: getRandomInteger(1000, 1000000),
+            type: getRandomeTypeHotel(HOTEL_TYPES),
+            rooms: getRandomInteger(1, 5),
+            guests: getRandomInteger(1, 5),
+            checkin: CHECKIN_TIMES[getRandomInteger(0, CHECKIN_TIMES.length - 1)],
+            checkout: CHECKOUT_TIMES[getRandomInteger(0, CHECKOUT_TIMES.length - 1)],
+            features: getRandomElements(FEATURES, getRandomInteger(0, FEATURES.length - 1)),
+            description: '',
+            photos: PHOTOS
+          },
+          location: {
+            x: posX,
+            y: posY
+          }
+        });
+      }
+      return listing;
     }
-    return listing;
   };
 })()
 ;
