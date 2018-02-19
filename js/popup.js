@@ -39,6 +39,7 @@
       template.querySelectorAll('.map__card p ')[4].textContent = data.offer.description;
       template.querySelector('.popup__pictures').appendChild(getPictures(data.offer.photos));
       template.querySelector('.popup__features').appendChild(getFeature(data.offer.features));
+      template.removeChild(template.querySelector('.map__pin'));
       return template;
     }
   };
