@@ -29,7 +29,6 @@ var pageActive = function () {
       if (!evt.target.parentElement.classList.contains('map__pin--main')) {
         addPopup(evt.target.parentElement);
       }
-
     }
     if (evt.target.classList.contains('map__pin') && !evt.target.classList.contains('map__pin--main')) {
       addPopup(evt.target);
@@ -54,6 +53,7 @@ var deletePopup = function () {
   }
 };
 pin.addEventListener('mouseup', function () {
+
   if (!pageStatus) {
     pageActive();
   }
