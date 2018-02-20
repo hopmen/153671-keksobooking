@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+window.data = (function () {
 
 
 // нужные переменые
@@ -44,7 +44,7 @@
     return null;
   };
   // функция возвращает массив из 'number' эелентов, каждый элемент это объект
-  window.data = {
+  return {
     getCards: function () {
       var listing = [];// объект который хранит иформацию для метки на карте
       for (var i = 0; i < LABELS_NUMBER; i++) {

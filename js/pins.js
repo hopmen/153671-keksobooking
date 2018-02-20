@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+window.pins = (function () {
   // функция возращает метку с подставленми кординатами и аватаркой из объекта 'data'
   var idPin = 0;
   var getLabel = function (data) {
@@ -20,7 +20,7 @@
 
 
   // функция добавляет все метки из 'arrayLabels' на карту 'mapLabels'
-  window.pins = {
+  return {
     getLabels: function (arrayLabels) {
       var fragment = document.createDocumentFragment();
       for (var i = 0; i < arrayLabels.length; i++) {
