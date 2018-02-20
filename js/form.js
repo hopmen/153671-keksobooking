@@ -1,7 +1,7 @@
 'use strict';
 
-(function () {
-  window.form = {
+window.form = (function () {
+  return {
     // деактивирует тег fieldsets добавляя атрибут disabled
     disableFieldsets: function () {
       var fieldsets = document.querySelectorAll('.notice__form fieldset');

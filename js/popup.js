@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+window.popup = (function () {
 // возвращает фрагмет созданых из pictures картинок
   var getPictures = function (pictures) {
     var fragment = document.createDocumentFragment();
@@ -25,7 +25,7 @@
     return fragment;
   };
   // возвращает созданую карточку из данных объекта 'data' по шабону template
-  window.popup = {
+  return {
     getPopup: function (data) {
       var template = document.querySelector('template').content.cloneNode(true);
       template.querySelector('.map__card .popup__avatar').src = data.author.avatar;
